@@ -2,27 +2,19 @@ import Folder from '../models/folder.model'
 import errorHandler from './../helpers/dbErrorHandler'
 import formidable from 'formidable'
 
-const create = (req, res, next) => {
-  let form = new formidable.IncomingForm()
-  form.keepExtensions = true
-  form.parse(req, async (err, fields, folders) => {
-    if (err) {
-      return res.status(400).json({
-        error: "folder could not be created"
-      })
+const create = async(req, res, next) => {
+  const folder = new Folder(req.body)
+	folder.createdBy = req.profile
+    try{
+        await folder.save() 
+        return res.status(200).json({
+            message: "folder created successfully"
+        })
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
     }
-    let folder = new Folder(req.body)
-    folder.createdBy = req.profile
-    
-    try {
-      let result = await folder.save()
-      res.json(result)
-    }catch (err){
-      return res.status(400).json({
-        error: errorHandler.getErrorMessage(err)
-      })
-    }
-  })
 }
 
 const folderByID = async (req, res, next, id) => {
