@@ -11,7 +11,21 @@
 
 ## the project covers the following api's:
 
-### /api/users
+## User Routes:
+
+### (POST) /api/users 
 #### post api to create user it requires the body:
-##### { "name":"0Athena" , "email":"put the email and it should be of the following format gh@gh.gh for instance" , "password":"" }
+##### { "name":"0Athena" , "email":"put the email and it should be of the following format gh@gh.gh for instance" , "password":"123456" }
+
+### (GET) /api/users 
+#### get api to get all users
+
+### (GET) /api/users/:userID
+#### get the specific user api where :userID is the objectID of the user and it requires to sign in 
+
+### (UPDATE) /api/users/:userID
+#### update the user informations and it requires user to sign in and only the user of the account is authorized to make changes
+
+### (delete) /api/users/:userID
+#### delete the user account and it requires user to sign in and only the user of the account is authorized to delete his account
 
