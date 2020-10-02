@@ -4,18 +4,14 @@ import formidable from 'formidable'
 import fs from 'fs'
 
 const create = async(req, res, next) => {
-	const file = new File(req.body)
-	file.uploadedBy = req.profile
+    const file = new File(req.body)
+    file.uploadedBy = req.profile
     file.parentFolder = req.folder
-    file.parentFolder.filesNum += 1
-    if(files.photo){
-      file.photo.data = fs.readFileSync(files.photo.path)
-      file.photo.contentType = files.photo.type
-    }
+    
     try{
         await file.save() 
         return res.status(200).json({
-            message: "successfully signed up"
+            message: "successfully file created"
         })
     }catch(err){
         return res.status(400).json({
