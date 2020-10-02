@@ -3,32 +3,26 @@ import errorHandler from './../helpers/dbErrorHandler'
 import formidable from 'formidable'
 import fs from 'fs'
 
-const create = (req, res, next) => {
-  let form = new formidable.IncomingForm()
-  form.keepExtensions = true
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(400).json({
-        error: "file could not be uploaded"
-      })
-    }
-    let file = new File(fields)
-    file.uploadedBy = req.profile
+const create = async(req, res, next) => {
+	const file = new File(req.body)
+	file.uploadedBy = req.profile
     file.parentFolder = req.folder
     file.parentFolder.filesNum += 1
     if(files.photo){
       file.photo.data = fs.readFileSync(files.photo.path)
       file.photo.contentType = files.photo.type
     }
-    try {
-      let result = await file.save()
-      res.json(result)
-    }catch (err){
-      return res.status(400).json({
-        error: errorHandler.getErrorMessage(err)
-      })
+    try{
+        await file.save() 
+        return res.status(200).json({
+            message: "successfully signed up"
+        })
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
     }
-  })
+	
 }
 
 const fileByID = async (req, res, next, id) => {
